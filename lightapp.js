@@ -15,7 +15,9 @@ function startup(e){
 }
 var figure_points = [];
 var figure_lines = [];
+
 var light_points = [];
+var light_lines = [];
 
 function Point(x, y) {
     this.x = x;
@@ -25,6 +27,7 @@ function Point(x, y) {
 function Line(start, end){
     this.start = start
     this.end = end
+
 
 }
 
@@ -69,6 +72,7 @@ function canvasclicked(e){
     else if(linetype === 'light'){
         if(light_points.length === 2){
             light_points = []
+            light_lines = []
             clearCanvas()
             redrawFigure(context)
         }
@@ -77,18 +81,62 @@ function canvasclicked(e){
 
         if(light_points.length === 2){
             //second new point
-            if(debug){console.log("light real", light_points[0][0], light_points[0][1], x, y)}
-            let calculated_beam = getLineToEnd( new Line(light_points[0],light_points[1]), this)
+            if(debug){console.log("light real", light_points[0].x, light_points[0].y, light_points[1].x, light_points[1].y)}
 
-            let first_intersection = findFirstIntersection(calculated_beam, figure_lines)
-            if(first_intersection){
-                let first_intersetion_point = intersect(calculated_beam, first_intersection)
 
-                calculated_beam.end = first_intersetion_point
-                drawMirroredBeam(calculated_beam, first_intersection, first_intersetion_point)
+            let hit_wall = false;
+            let last_line = new Line(light_points[0], light_points[1])
+            let last_intersection;
+
+            let watchdog = 0;
+
+
+            while(!hit_wall) {
+                watchdog += 1;
+                if(watchdog > 10){
+                    break;
+                }
+
+                let calculated_beam = getLineToEnd(last_line, this)
+                let valid_figure_lines = [...figure_lines]
+                if(last_intersection){
+                    let index = valid_figure_lines.indexOf(last_intersection);
+                    if (index > -1) {
+                        valid_figure_lines.splice(index, 1);
+                    }
+                }
+
+                let first_intersection = findFirstIntersection(calculated_beam, valid_figure_lines)
+
+
+                if (first_intersection) {
+                    //there are intersections
+                    let first_intersection_point = intersect(calculated_beam, first_intersection)
+                    last_intersection = first_intersection
+
+                    calculated_beam.end = first_intersection_point
+
+                    if(light_lines.length === 0){
+                        //if this is the first line
+                        light_lines.push(calculated_beam)
+                    }
+
+                    last_line = getMirroredBeam(calculated_beam, first_intersection, first_intersection_point)
+                }
+                else{
+                    //no intersections found, last line
+                    hit_wall = true
+                    last_line = calculated_beam
+
+                }
+                light_lines.push(last_line)
+
             }
+            light_lines.forEach(function (light_line){
+                drawLine(context, light_line, '#ff0000', 6)
+            })
 
-            drawLine(context, calculated_beam, '#ff0000', 6)
+
         }
 
     }
@@ -96,7 +144,12 @@ function canvasclicked(e){
 
 }
 
-function drawMirroredBeam(light, mirror, intersection_point){
+function drawLight(){
+
+
+}
+
+function getMirroredBeam(light, mirror, intersection_point){
     let angle = find_angle(light.start, intersection_point, mirror.start)
     let side = true
     if(angle === Math.PI*0.5){
@@ -110,6 +163,8 @@ function drawMirroredBeam(light, mirror, intersection_point){
     }
 
     console.log(angle)
+    return new Line(intersection_point, findMirrorPoint( Math.PI * 0.5 - angle, intersection_point, light.start ))
+
 
 
 }
@@ -165,11 +220,7 @@ function getSlopeForPoints(x1, y1, x2, y2) {
 
 function redrawFigure(context){
     figure_lines.forEach(function(c){
-
-
         drawLine(context, c, '#000000', 6)
-
-
     })
 
 
@@ -197,6 +248,7 @@ function resetAll(e){
     figure_lines = []
     figure_points = []
     light_points = []
+    light_lines = []
     document.getElementById("lineslist").innerHTML = "";
 }
 function addLineToList(line){
@@ -217,6 +269,69 @@ function find_angle(A,B,C) {
     let BC = Math.sqrt(Math.pow(B.x - C.x, 2) + Math.pow(B.y - C.y, 2));
     let AC = Math.sqrt(Math.pow(C.x - A.x, 2) + Math.pow(C.y - A.y, 2));
     return Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB));
+}
+
+function findMirrorPoint(alpha, A, B){
+    let length = lineDistance(A, B)
+    let alt;
+
+    if(A.x < B.x && A.y > B.y){
+        alt = false;
+    }
+    else if(A.x > B.x && A.y > B.y){
+        alt = true;
+    }
+    else if(A.x < B.x && A.y < B.y){
+        alt = true;
+    }
+    else if(A.x > B.x && A.y < B.y){
+        alt = false;
+    }
+
+    return calculateThirdPoint(A, B, length, length, alpha*2, alt)
+}
+
+function lineDistance(p1, p2) {
+    return Math.hypot(p2.x - p1.x, p2.y - p1.y)
+}
+
+function calculateThirdPoint(p1, p2, b, c, A, alt) {
+
+    var Bx;
+    var By;
+
+    alt = typeof alt === 'undefined' ? false : alt;
+    let Ax = p1.x
+    let Ay = p1.y
+    let Cx = p2.x
+    let Cy = p2.y
+
+
+    //unit vector
+    uACx = (Cx - Ax) / b;
+    uACy = (Cy - Ay) / b;
+
+    if(alt) {
+
+        //rotated vector
+        uABx = uACx * Math.cos((A)) - uACy * Math.sin((A));
+        uABy = uACx * Math.sin((A)) + uACy * Math.cos((A));
+
+        //B position uses length of edge
+        Bx = Ax + c * uABx;
+        By = Ay + c * uABy;
+    }
+    else {
+        //vector rotated into another direction
+        uABx = uACx * Math.cos((A)) + uACy * Math.sin((A));
+        uABy = - uACx * Math.sin((A)) + uACy * Math.cos((A));
+
+        //second possible position
+        Bx = Ax + c * uABx;
+        By = Ay + c * uABy;
+    }
+
+    return new Point(Bx, By);
 }
 
 function findFirstIntersection(line, lines){
