@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', startup, false);
 function startup(e){
     document.getElementById('drawcanvas').addEventListener('click', canvasclicked, false);
 
-    document.getElementById('clear').addEventListener('click', clearCanvas, false);
+    document.getElementById('clear').addEventListener('click', resetAll, false);
 
 
 }
@@ -192,6 +192,13 @@ function clearCanvas(e)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+function resetAll(e){
+    clearCanvas();
+    figure_lines = []
+    figure_points = []
+    light_points = []
+    document.getElementById("lineslist").innerHTML = "";
+}
 function addLineToList(line){
 
     var ul = document.getElementById("lineslist");
