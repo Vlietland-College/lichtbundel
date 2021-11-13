@@ -37,7 +37,7 @@ We now know all intersecting linesegments. To find out the first intersection I 
 If that is the case, discard the first possibility and select the first segment that still intersects. Test the beam against the other still intersecting segments. If no possibilities are left after that we have a winner! 
 
 #### Calculating the reflected beam
-Image the following situation (CA is the calculated light beam)
+Imagine the following situation (CA is the calculated light beam)
 
 If └ CAQ = 1/2 π the beam is perpendicular to the mirror and C = B.
 
