@@ -20,10 +20,10 @@ At this time this is done by first calculating the point where the beam collides
 
 
 #### Getting the first intersection with the beam
-Then we iterate over all linesegments and discard the segments that do not intersect with the beam (fist beampoint to intersection beam-border). If no segments intersect the beam hits the border and we're done!
+Then we iterate over all linesegments and discard the segments that do not intersect with the beam (first beampoint to intersection beam-border). If no segments intersect the beam hits the border, and we're done!
 
 We now know all intersecting linesegments. To find out the first intersection I just take the first possibility and check if the beamsegment from beam point one to intersection possibility one intersects with one of the other possibilities. 
-If that is the case, discard the first possibility and use the second one. If no possibilities are left after that we have a winner! 
+If that is the case, discard the first possibility and select the first segment that still intersects. Test the beam against the other still intersecting segments. If no possibilities are left after that we have a winner! 
 
 #### Calculating the reflected beam
 Image the following situation (CA is the calculated light beam)
