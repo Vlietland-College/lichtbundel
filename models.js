@@ -15,6 +15,4 @@ export function Line(start, end) {
     this.length = function(){
             return Math.hypot(this.end.x - this.start.x, this.end.y - this.start.y)
     }
-
-
 }

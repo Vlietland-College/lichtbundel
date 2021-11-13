@@ -15,7 +15,10 @@ document.addEventListener('DOMContentLoaded', startup, false);
 
 
 function startup(e){
-    document.getElementById('drawcanvas').addEventListener('click', canvasclicked, false);
+
+    var container = document.getElementById("raphaelContainer");
+    document.getElementById('raphaelContainer').addEventListener('mousedown', canvasclicked, false);
+    var paper = Raphael(container, 600, 600);
 
     document.getElementById('clear').addEventListener('click', resetAll, false);
 
