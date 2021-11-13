@@ -1,7 +1,7 @@
 # Lichtbundel
 
 
-Todo:
+# Todo
 - [ ] Draw points on corners
 - [ ] Show number of collisions
 - [ ] Redraw beam on adding figure point
@@ -13,6 +13,10 @@ Todo:
 - [ ] Prevent CPU lock for infinitive reflection
 - [ ] Make straight angle when shift (?) is held down
 - [ ] Make everything beautiful 
+
+#Live demo
+https://apps.xinne.nl/lichtbundel/
+
 
 ## How it works
 

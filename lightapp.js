@@ -7,7 +7,7 @@ import {
     RotationDirection
 } from "./math.js";
 import {Line, Point} from "./models.js";
-import {debug} from "./settings.js";
+import {debug, max_number_of_collisions} from "./settings.js";
 
 
 document.addEventListener('DOMContentLoaded', startup, false);
@@ -93,14 +93,11 @@ function canvasclicked(e){
             let last_intersection;
 
             let line_number = 0;
-
+            let time_reached_max = 0;
 
             while(!hit_wall) {
 
 
-                if(line_number > 100){
-                    break;
-                }
                 if(debug){console.log("Doing line", line_number)}
 
                 let calculated_beam = getLineToEnd(last_line, this)
@@ -124,8 +121,19 @@ function canvasclicked(e){
                     calculated_beam.end = first_intersection_point
                     last_line = getMirroredBeam(calculated_beam, first_intersection, first_intersection_point)
 
-
                     light_lines.push(calculated_beam)
+                    if(line_number >= max_number_of_collisions*(time_reached_max+1)){
+                        drawLight(context)
+                        setCollisionNumber(line_number)
+
+                        if (confirm("We've hit " + line_number + " collisions! Continue? ")) {
+                            time_reached_max += 1;
+                        } else {
+                            // Stop!
+                           break;
+                        }
+                    }
+
                 }
                 else{
                     //no intersections found, last line
@@ -134,10 +142,14 @@ function canvasclicked(e){
                     light_lines.push(last_line)
 
                 }
+
                 line_number += 1;
 
 
             }
+            clearCanvas()
+            redrawFigure(context)
+            setCollisionNumber(line_number)
             drawLight(context);
 
 
@@ -227,9 +239,15 @@ function resetAll(e){
 
 function resetLight(){
     document.getElementById("lightlist").innerHTML = "lights: ";
+    document.getElementById("collisionnumber").innerHTML = "";
     light_points = []
     light_lines = []
 }
+
+function setCollisionNumber(number){
+    document.getElementById("collisionnumber").innerHTML = number;
+}
+
 
 function addLineToList(line, list){
 
