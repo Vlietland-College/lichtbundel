@@ -6,7 +6,7 @@ import {
     intersect,
     RotationDirection
 } from "./math.js";
-import {Line, Point, RaphaelLine} from "./models.js";
+import {Line, Point, RaphaelLine, lineMaker} from "./models.js";
 import {debug, max_number_of_collisions} from "./settings.js";
 
 
@@ -15,11 +15,15 @@ document.addEventListener('DOMContentLoaded', startup, false);
 
 var paper;
 var container;
+var curr_line_mover;
 function startup(e){
 
     container = document.getElementById("raphaelContainer");
-    document.getElementById('raphaelContainer').addEventListener('mousedown', canvasclicked, false);
+
+
     paper = Raphael(container, 600, 600);
+
+    curr_line_mover = new lineMaker(container, paper);
 
     document.getElementById('clear').addEventListener('click', resetAll, false);
 
@@ -46,7 +50,12 @@ function getCursorPosition(e) {
     return [x, y];
 }
 
-var curr_line;
+
+
+
+function drawlinemousemove(e){
+    curr_line.updateEnd(e.offsetX, e.offsetY);
+}
 function canvasclicked(e){
 
     let linetype = document.querySelector('input[name="linetype"]:checked').value;
@@ -54,15 +63,28 @@ function canvasclicked(e){
     let x = e.offsetX;
     let y = e.offsetY;
 
-    curr_line = new RaphaelLine(new Point(x, y), new Point(x, y), paper);
+    let line = new RaphaelLine(new Point(x, y), new Point(x, y), paper);
+
+    curr_line_mover.setLine(line)
+    curr_line_mover.startMove()
+
+    return;
+    container.addEventListener('mousemove', drawlinemousemove);
 
 
-    container.addEventListener('mousemove', function(e) {
-        x = e.offsetX;
-        y = e.offsetY;
-        curr_line.updateEnd(x, y);
-        console.log(x, y)
-    });
+    if(!e.shiftKey) {
+        container.addEventListener('mouseup', function (e) {
+            if(!e.shiftKey) {
+                container.removeEventListener('mousemove', drawlinemousemove)
+                container.removeEventListener('mouseup', this)
+            }
+            else{
+                let x = e.offsetX;
+                let y = e.offsetY;
+                curr_line = new RaphaelLine(new Point(x, y), new Point(x, y), paper);
+            }
+        });
+    }
 
     return;
     let context = this.getContext('2d');
