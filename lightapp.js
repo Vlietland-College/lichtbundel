@@ -77,8 +77,7 @@ function canvasclicked(e){
     }
     else if(linetype === 'light'){
         if(light_points.length === 2){
-            light_points = []
-            light_lines = []
+            resetLight()
             clearCanvas()
             redrawFigure(context)
         }
@@ -101,7 +100,7 @@ function canvasclicked(e){
             while(!hit_wall) {
 
 
-                if(line_number > 10){
+                if(line_number > 100){
                     break;
                 }
                 if(debug){console.log("Doing line", line_number)}
@@ -127,13 +126,10 @@ function canvasclicked(e){
                     calculated_beam.end = first_intersection_point
                     last_line = getMirroredBeam(calculated_beam, first_intersection, first_intersection_point)
 
-                    if(light_lines.length === 0){
-                        //if this is the first line
-                        light_lines.push(calculated_beam)
-                    }
-                    else {
-                        light_lines.push(last_line)
-                    }
+
+                    light_lines.push(calculated_beam)
+
+
                 }
                 else{
                     //no intersections found, last line
@@ -166,8 +162,11 @@ function drawLight(){
 
 function getMirroredBeam(light, mirror, intersection_point){
     let angle = find_angle(light.start, intersection_point, mirror.start)
+
+    let real_angle = angle
     let side = true
-    console.log("raw angle", angle)
+
+
 
     if(angle === Math.PI*0.5){
         console.log("haaks joehoe")
@@ -179,12 +178,21 @@ function getMirroredBeam(light, mirror, intersection_point){
 
     }
 
-    console.log(angle)
-    return new Line(intersection_point, findMirrorPoint( Math.PI * 0.5 - angle, intersection_point, light.start ))
+    //calculate the rotation direction of the mirror - intersect - light to determine the rotation direction for the reflected beam
+    let rotate = RotationDirection(side?mirror.start:mirror.end, intersection_point, light.start)
+    let point_c =  findMirrorPoint( Math.PI * 0.5 - angle, intersection_point, light.start, rotate )
+
+
+    let mirror_line =  new Line(intersection_point, point_c)
+
+    //console.log("angle", angle, "real", real_angle, "angle/slope", angle/light.slope(), "light slope",light.slope(),"beam slope", mirror_line.slope(), "mirror_slope", mirror.slope())
+
+    return mirror_line;
 
 
 
 }
+
 
 
 
@@ -258,11 +266,14 @@ function resetAll(e){
     clearCanvas();
     figure_lines = []
     figure_points = []
+    document.getElementById("lineslist").innerHTML = "Lines: ";
+    resetLight()
+}
+
+function resetLight(){
+    document.getElementById("lightlist").innerHTML = "lights: ";
     light_points = []
     light_lines = []
-    document.getElementById("lineslist").innerHTML = "Lines: ";
-    document.getElementById("lightlist").innerHTML = "lights: ";
-
 }
 function addLineToList(line, list){
 
@@ -287,24 +298,16 @@ function find_angle(A,B,C) {
 
 }
 
-function findMirrorPoint(alpha, A, B){
+function findMirrorPoint(alpha, A, B, rotation){
     let length = lineDistance(A, B)
-    let alt;
+    let alt=false
+    if(rotation === -1){
+        alt=true
+    }
+    let C  = calculateThirdPoint(A, B, length, length, alpha*2, alt)
 
-    if(A.x < B.x && A.y > B.y){
-        alt = false;
-    }
-    else if(A.x > B.x && A.y > B.y){
-        alt = true;
-    }
-    else if(A.x < B.x && A.y < B.y){
-        alt = true;
-    }
-    else if(A.x > B.x && A.y < B.y){
-        alt = false;
-    }
 
-    return calculateThirdPoint(A, B, length, length, alpha*2, alt)
+    return C
 }
 
 function lineDistance(p1, p2) {
@@ -433,5 +436,15 @@ function intersect(line1, line2) {
     let y = y1 + ua * (y2 - y1)
 
     return new Point(x,y)
+}
+
+function RotationDirection(p1,p2,p3) {
+
+    if (((p3.y - p1.y) * (p2.x - p1.x)) > ((p2.y - p1.y) * (p3.x - p1.x)))
+        return 1;
+    else if (((p3.y - p1.y) * (p2.x - p1.x)) == ((p2.y - p1.y) * (p3.x - p1.x)))
+        return 0;
+
+    return -1;
 }
 
