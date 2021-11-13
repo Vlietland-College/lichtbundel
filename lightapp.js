@@ -6,19 +6,20 @@ import {
     intersect,
     RotationDirection
 } from "./math.js";
-import {Line, Point} from "./models.js";
+import {Line, Point, RaphaelLine} from "./models.js";
 import {debug, max_number_of_collisions} from "./settings.js";
 
 
 document.addEventListener('DOMContentLoaded', startup, false);
 
 
-
+var paper;
+var container;
 function startup(e){
 
-    var container = document.getElementById("raphaelContainer");
+    container = document.getElementById("raphaelContainer");
     document.getElementById('raphaelContainer').addEventListener('mousedown', canvasclicked, false);
-    var paper = Raphael(container, 600, 600);
+    paper = Raphael(container, 600, 600);
 
     document.getElementById('clear').addEventListener('click', resetAll, false);
 
@@ -45,14 +46,25 @@ function getCursorPosition(e) {
     return [x, y];
 }
 
-
+var curr_line;
 function canvasclicked(e){
 
     let linetype = document.querySelector('input[name="linetype"]:checked').value;
 
-    let x = getCursorPosition(e)[0] - this.offsetLeft;
-    let y = getCursorPosition(e)[1] - this.offsetTop;
+    let x = e.offsetX;
+    let y = e.offsetY;
 
+    curr_line = new RaphaelLine(new Point(x, y), new Point(x, y), paper);
+
+
+    container.addEventListener('mousemove', function(e) {
+        x = e.offsetX;
+        y = e.offsetY;
+        curr_line.updateEnd(x, y);
+        console.log(x, y)
+    });
+
+    return;
     let context = this.getContext('2d');
 
     if(linetype === 'figure'){
@@ -84,6 +96,8 @@ function canvasclicked(e){
         }
 
         light_points.push(clicked_point)
+
+
 
         if(light_points.length === 2){
             if(debug){console.log("[##### NEW LIGHTS RUN #####]")}
