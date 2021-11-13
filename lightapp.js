@@ -155,11 +155,6 @@ function canvasclicked(e){
 
 }
 
-function drawLight(){
-
-
-}
-
 function getMirroredBeam(light, mirror, intersection_point){
     let angle = find_angle(light.start, intersection_point, mirror.start)
 
@@ -280,7 +275,7 @@ function addLineToList(line, list){
     var ul = document.getElementById(list);
     var li = document.createElement("li");
 
-    li.appendChild(document.createTextNode('['+ line.start.x + ','+ line.start.y + ' ] - ['+ line.end.x + ','+ line.end.y + ']'));
+    li.appendChild(document.createTextNode('['+ Math.round(line.start.x) + ','+ Math.round(line.start.y) + ' ] - ['+ Math.round(line.end.x) + ','+ Math.round(line.end.y) + ']'));
     ul.appendChild(li);
 
 
@@ -383,16 +378,12 @@ function findIntersections(line, lines){
     var intersecting_lines = []
     lines.forEach(function(figure_line){
 
-        //OlddrawLine(document.getElementById('drawcanvas').getContext("2d"), line[0][0], line[0][1], line[1][0], line[1][1], '#ff0000', 6)
-
         let intersection = intersect(line, figure_line)
 
         if(intersection){
 
             intersecting_lines.push(figure_line)
         }
-        //clearCanvas()
-        //redrawFigure(document.getElementById('drawcanvas').getContext("2d"))
     })
 
     return intersecting_lines;
