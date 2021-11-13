@@ -148,8 +148,11 @@ function canvasclicked(e){
 
             }
             clearCanvas()
+
             redrawFigure(context)
+
             setCollisionNumber(line_number)
+
             drawLight(context);
 
 

@@ -12,6 +12,9 @@ export function Line(start, end) {
     this.direction = function () {
         return {x: this.end.x > this.start.x, y: this.end.y > this.start.y}
     }
+    this.length = function(){
+            return Math.hypot(this.end.x - this.start.x, this.end.y - this.start.y)
+    }
 
 
 }
