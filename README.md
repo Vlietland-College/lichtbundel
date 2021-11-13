@@ -13,7 +13,7 @@
 - [x] Prevent CPU lock for infinitive reflection 
 - [ ] Make straight angle when shift (?) is held down
 - [ ] Make everything beautiful 
-- [ ] #2
+- [ ] https://github.com/Xinne/lichtbundel/issues/2
 
 # Live demo
 https://apps.xinne.nl/lichtbundel/
