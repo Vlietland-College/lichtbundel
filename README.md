@@ -10,7 +10,7 @@
 - [ ] Add interactive mouseover for the beam and figure list 
 - [ ] add interactive mouseover for corners
 - [ ] Make drawings and results 'savable' shareable
-- [x] Prevent CPU lock for infinitive reflection 83d0a3e
+- [x] Prevent CPU lock for infinitive reflection 83d0a3e1a47d5f710b254b67cf88b37441c841b3
 - [ ] Make straight angle when shift (?) is held down
 - [ ] Make everything beautiful 
 
