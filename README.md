@@ -26,7 +26,7 @@ First, we have to determine the first intersection point.
 We have an array filled with figure-lines and a lightbeam.
 
 #### Calculating the beam path
-At this time this is done by first calculating the point where the beam collides with the border. First we determine the direction of the line in the y and x-axis. With these directions we can determine if the beam collides with the axis or the far edge.  We then calculate the intersection point with either the X-axis or bottom edge. If the calculated y-coordinate falls within the bounds we know the beam's endpoint. If not, calculate the intersection with Y (or right edge).   
+At this time this is done by first calculating the point where the beam collides with the border. First we determine the direction of the line in the y and x-axis. With these directions we can determine if the beam collides with the axis or the far edge.  We then calculate the intersection point with either the X-axis (or bottom edge). If the calculated y-coordinate falls within the bounds we know the beam's endpoint. If not, calculate the intersection with Y (or right edge).   
 
 
 
