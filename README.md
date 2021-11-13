@@ -14,7 +14,7 @@
 - [ ] Make straight angle when shift (?) is held down
 - [ ] Make everything beautiful 
 - [ ] [Give beam a color gradient](https://github.com/Xinne/lichtbundel/issues/2)
-- [ ] Use [Raphael] (https://dmitrybaranovskiy.github.io/raphael/) instead of HTML5 for animation
+- [ ] Use [Raphael](https://dmitrybaranovskiy.github.io/raphael/) instead of HTML5 for animation
 
 # Live demo
 https://apps.xinne.nl/lichtbundel/
