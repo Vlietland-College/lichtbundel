@@ -42,6 +42,7 @@ function getCursorPosition(e) {
     return [x, y];
 }
 
+
 function canvasclicked(e){
 
     let linetype = document.querySelector('input[name="linetype"]:checked').value;
@@ -125,8 +126,6 @@ function canvasclicked(e){
 
 
                     light_lines.push(calculated_beam)
-
-
                 }
                 else{
                     //no intersections found, last line
@@ -139,10 +138,7 @@ function canvasclicked(e){
 
 
             }
-            light_lines.forEach(function (light_line){
-                addLineToList(light_line, "lightlist");
-                drawLine(context, light_line, '#ff0000', 6)
-            })
+            drawLight(context);
 
 
         }
@@ -150,6 +146,14 @@ function canvasclicked(e){
     }
 
 
+}
+
+
+function drawLight(context) {
+    light_lines.forEach(function (light_line) {
+        addLineToList(light_line, "lightlist");
+        drawLine(context, light_line, '#ff0000', 6)
+    })
 }
 
 function getMirroredBeam(light, mirror, intersection_point){
@@ -226,6 +230,7 @@ function resetLight(){
     light_points = []
     light_lines = []
 }
+
 function addLineToList(line, list){
 
     var ul = document.getElementById(list);
