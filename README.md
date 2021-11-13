@@ -2,17 +2,17 @@
 
 
 Todo:
-- [] Draw points on corners
-- [] Show number of collisions
-- [] Redraw beam on adding figure point
-- [] Make corners draggable to change figure shape
-- [] Make canvas zoomable
-- [] Add interactive mouseover for the beam and figure list 
-- [] add interactive mouseover for corners
-- [] Make drawings and results 'savable' shareable
-- [] Prevent CPU lock for infinitive reflection
-- [] Make straight angle when shift (?) is held down
-- [] Make everything beautiful 
+- [ ] Draw points on corners
+- [ ] Show number of collisions
+- [ ] Redraw beam on adding figure point
+- [ ] Make corners draggable to change figure shape
+- [ ] Make canvas zoomable
+- [ ] Add interactive mouseover for the beam and figure list 
+- [ ] add interactive mouseover for corners
+- [ ] Make drawings and results 'savable' shareable
+- [ ] Prevent CPU lock for infinitive reflection
+- [ ] Make straight angle when shift (?) is held down
+- [ ] Make everything beautiful 
 
 ## How it works
 
