@@ -12,6 +12,7 @@ Todo:
 - [] Make drawings and results 'savable' shareable
 - [] Prevent CPU lock for infinitive reflection
 - [] Make straight angle when shift (?) is held down
+- [] Make everything beautiful 
 
 ## How it works
 
