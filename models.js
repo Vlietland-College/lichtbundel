@@ -23,16 +23,55 @@ export class Line{
     }
 }
 
+export class cornerPoint{
+    #friends = [];
+    line;
+    #point;
+
+    constructor(point, line1, raphael) {
+        this.#point = point
+        this.#friends.push(line1)
+        this.node = raphael.circle(this.#point.x, this.#point.y, 1).attr({fill:"#000"})
+    }
+
+    redraw(){
+        this.node.attr({"cx":this.#point.x, "cy":this.#point.y})
+    }
+
+    activateMouseHover(){
+        this.node.mouseover((e)=>{
+            this.node.attr({
+                r: 3,
+            });
+
+        })
+        this.node.mouseout((e)=>{
+            this.node.attr({
+                r:1,
+            });
+
+        })
+    }
+    deactivateMouseHover(){
+        this.node.unmouseover()
+        this.node.unmouseout()
+    }
+
+}
+
 export class RaphaelLine extends Line{
     constructor(start, end, raphael) {
         super(start, end);
         this.raphael = raphael
-        this.node = raphael.path(this.getPath())
-        this.node.attr({
+        this.node = raphael.path(this.getPath()).attr({
             stroke: "#000",
             fill:"#000",
             "stroke-width": 1
         });
+
+        this.start_node = new cornerPoint(this.start, this, raphael)
+        this.end_node = new cornerPoint(this.end, this, raphael)
+
     }
     getPath() {
         return "M" + this.start.x + " " + this.start.y + " L" + this.end.x + " " + this.end.y;
@@ -40,9 +79,13 @@ export class RaphaelLine extends Line{
 
     redraw() {
         this.node.attr("path", this.getPath());
+        this.start_node.redraw()
+        this.end_node.redraw()
 
     }
     activateMouseHover(){
+        this.end_node.activateMouseHover()
+        this.start_node.activateMouseHover()
         this.node.mouseover((e)=>{
             this.node.attr({
                 stroke: "#000",
@@ -99,6 +142,7 @@ export class lineMaker{
     }
 
     newLine(e){
+        console.log(e)
         let x = e.offsetX;
         let y = e.offsetY;
 
@@ -126,7 +170,11 @@ export class lineMaker{
         else if (newline) {
             this.container.addEventListener('mouseup', (e) => {
                 this.stopMove(e)
-                if(this.should_listen_for_newline){
+                if(e.shiftKey){
+                    this.newLine(e)
+                }
+
+                else if(this.should_listen_for_newline){
                     this.listenForNewLine()
                 }
             }, {once: true})
