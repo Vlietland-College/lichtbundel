@@ -1,11 +1,17 @@
 # Lichtbundel
 
 
-Now busy with https://stackoverflow.com/questions/9043805/test-if-two-lines-intersect-javascript-function to work on intersection of the lightbeam with the figure.
-
 Todo:
-Draw points on corners
-
+- [] Draw points on corners
+- [] Show number of collisions
+- [] Redraw beam on adding figure point
+- [] Make corners draggable to change figure shape
+- [] Make canvas zoomable
+- [] Add interactive mouseover for the beam and figure list 
+- [] add interactive mouseover for corners
+- [] Make drawings and results 'savable' shareable
+- [] Prevent CPU lock for infinitive reflection
+- [] Make straight angle when shift (?) is held down
 
 ## How it works
 
