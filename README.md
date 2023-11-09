@@ -17,7 +17,7 @@
 - [ ] Use [Raphael](https://dmitrybaranovskiy.github.io/raphael/) instead of HTML5 for animation
 
 # Live demo
-https://apps.xinne.nl/lichtbundel/
+https://vlietland-college.github.io/lichtbundel/
 
 
 ## How it works
