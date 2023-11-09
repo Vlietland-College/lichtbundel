@@ -12,7 +12,8 @@
 - [ ] Make drawings and results 'savable' shareable
 - [x] Prevent CPU lock for infinitive reflection 
 - [ ] Make straight angle when shift (?) is held down
-- [ ] Make everything beautiful 
+- [ ] Make everything beautiful
+- [ ] Prevent self intersection of figure
 - [ ] [Give beam a color gradient](https://github.com/Xinne/lichtbundel/issues/2)
 - [ ] Use [Raphael](https://dmitrybaranovskiy.github.io/raphael/) instead of HTML5 for animation
 
