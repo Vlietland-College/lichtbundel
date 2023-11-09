@@ -51,7 +51,7 @@ We know that  └ CAD = └ BAD and that b has the same length as c.
 
 ![alt text](https://github.com/Xinne/lichtbundel/blob/master/img/triangle.png?raw=true)
 
-First we have to calculate if AC needs to be rotated clockwise or counterclockwise to get AB. For this we determine the rotation direction of △CAQ. If this direction is clockwise we need to rotate clockwise and vice versa.
+First we have to calculate if AC needs to be rotated clockwise or counterclockwise to get AB. For this we determine the rotation direction of △CAQ. If this direction is clockwise we need to rotate clockwise and vice versa. 
 
 The unity vector of CA is rotated over 2*(1/2 π - └ CAQ )  ( same as 2*(└ CAD )) and point B is calculated.
 
