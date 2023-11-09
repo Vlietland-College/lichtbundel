@@ -39,6 +39,8 @@ function getCursorPosition(e) {
         y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
     }
 
+    x=Math.round(x / 10) * 10
+    y=Math.round(xy/ 10) * 10
     return [x, y];
 }
 
