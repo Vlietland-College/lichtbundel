@@ -40,7 +40,7 @@ function getCursorPosition(e) {
     }
 
     x=Math.round(x / 10) * 10
-    y=Math.round(xy/ 10) * 10
+    y=Math.round(y/ 10) * 10
     return [x, y];
 }
 
